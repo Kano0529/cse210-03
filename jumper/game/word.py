@@ -64,25 +64,39 @@ class Word:
             boolean: True if a player guessed wrong    
         """
 
-        if guessed in self._letter_list:         #
-            self._guessed_list.append(guessed)
-            return False
+        if guessed in self._letter_list:         # if a player guessed right
+            self._guessed_list.append(guessed)   # appends it to the guessed_list
+            return False                         # sets wrong_guess to be false
         else:
-            return True    
+            return True                          # otherwise wrong_guess is true   
 
 
     def set_word(self):
-           
-        for i in range(len(self._current_list)):
-            if self._letter_list[i] in self._guessed_list:
-                self._current_list[i] = self._letter_list[i]  
+        """Substitutes _current_word with the letter guessed.
+        
+        Args:
+            self(Word): an instance of Word
 
-        self._current_word = "".join(self._current_list)
+        Return:
+            _current_word padded with the right guessed letter.    
+        """
+           
+        for i in range(len(self._current_list)):             # if list version of target word is in the 
+            if self._letter_list[i] in self._guessed_list:   # right guessed letter list,
+                self._current_list[i] = self._letter_list[i] # swap a list version of current word with 
+                                                             # the letter
+        self._current_word = "".join(self._current_list)     # _current_word gets _current_list(list is now a string)
 
         return self._current_word 
 
 
     def  complete_word(self):
+        """Checks if a word is completed with letters.
+        Args:
+            self(Word): an instance of Word
+        return:
+            True if all '_' is substituted with letters in a _current_list    
+        """
         if '_' in self._current_list:
             return False
         else:
