@@ -33,7 +33,7 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        # Display the parachute and the hidden word.
+        # Display the parachute and the hidden word..
         print()
         self._terminal_service.write_text(self._word.get_hidden_word())
         print()
@@ -46,7 +46,7 @@ class Director:
             self._do_outputs()
 
     def _get_inputs(self):
-        """Asks the user to guess a letter.
+        """Asks the user to guess a letter from a to z.
 
         Args:
             self (Director): an instance of Director.
