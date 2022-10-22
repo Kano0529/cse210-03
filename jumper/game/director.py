@@ -1,105 +1,80 @@
 from game.parachute import Parachute
-from game.word import Word
 from game.terminal_service import TerminalService
+from game.word import Word
 
 
 class Director:
     """A person who directs the game.
-    The responsibility of a Director is to control the sequence of a game.
+
+    The responsibility of a Director is to control the sequence of play.
 
     Attributes:
-        _parachute(Parachute): The game's parachute.
-        _word(Word): The game's word
-        _terminal_service: for getting and displaying information
-        _current_word(string): a word with current value
-        _current_parachute(string): a parachute with current value
-        _current_man(string): a man with current value
-        _your_guess(string): input letter
-        _missed(boolean): True if a player guessed wrong
+        _parachute (Parachute): The parachute worn by the player.
+        _terminal_service (TerminalService): For getting and displaying information on the terminal.
+        _word (Word): The game's chosen word.
+        _is_playing (boolean): Whether or not to keep playing.
     """
     
     def __init__(self):
-        """Constructs a new Director
+        """Constructs a new Director.
 
         Args:
             self(Director): an instance of Director.
         """
         self._parachute = Parachute()
-        self._word = Word()
         self._terminal_service = TerminalService()
-
-        self._current_word = ''
-        self._current_parachute = ''
-        self._current_man = ''
-        self._your_guess = ''
-        self.missed = False
-
+        self._word = Word()
+        self._is_playing = True
+        self._guess = ''
 
     def start_game(self):
-        """Draws the initial stage of the game and start the game by
-        running the main game loop.
+        """Draws the initial stage of the game and starts the game by running the main game loop.
+        
+        Args:
+            self (Director): an instance of Director.
+        """
+        print()
+        self._terminal_service.write_text(self._word.get_hidden_word())
+        print()
+        self._terminal_service.write_list(self._parachute.get_parachute())
+
+        while self._is_playing:
+            self._get_inputs()
+            self._do_updates()
+            self._do_outputs()
+
+    def _get_inputs(self):
+        """Asks the user to guess a letter.
 
         Args:
-            self(Director): an instance of Director
+            self (Director): an instance of Director.
         """
-        self._current_word = self._word.get_initial_word()
-        self._terminal_service.write_text(self._current_word)
-        self._current_parachute = self._parachute.set_parachute()
-        self._terminal_service.write_text(self._current_parachute)
-        self._current_man = self._parachute.set_man()
-        self._terminal_service.write_text(self._current_man)
+        self._guess = self._terminal_service.read_text("Guess a letter [a-z]: ")
+        self._word.set_hidden_word(self._guess)
 
-        while not self._word.complete_word() and self._parachute.has_parachute():
-            self._get_input()
-            self._do_update()
-            self._do_output()
-
-        if self._parachute.has_parachute():
-            self._terminal_service.write_text("You did it!")
-        else:
-            self._terminal_service.write_text("try again!")        
-
-
-    def _get_input(self):
-        """Get a letter as an input and checks if it is a right guess.
+    def _do_updates(self):
+        """Changes the parachute depending of the guess.
 
         Args:
-            self(Director): an instance of Director
+            self (Director): an instance of Director.
         """
-        self._your_guess = self._terminal_service.read_text("Guess a word [a-z]? ")
-        self.missed = self._word.wrong_guess(self._your_guess)
-
-
-    def _do_update(self):
-        """Sets a value for new parachute if a player guessed wrong or for a new 
-        current word if guessed right.
-
-        Args:
-            self(Director): an instance of Director
-        """
-        if self.missed:
-            self._parachute.get_size()
-            self._current_parachute = self._parachute.set_parachute()
-            self._current_man = self._parachute.set_man()
-        else:
-            self._current_word = self._word.set_word()
+        self._parachute.set_parachute(self._word.check_guess(self._guess))
  
-
-
-    def _do_output(self):
-        """Provides outputs to terminal_service
+    def _do_outputs(self):
+        """Provides the outputs to Terminal Service.
 
         Args:
-            self(Director): an instance of Director
+            self (Director): an instance of Director
         """
-        self._terminal_service.write_text(self._current_word)
-        self._terminal_service.write_text('')
-        self._terminal_service.write_text(self._current_parachute)
-        self._current_man = self._parachute.set_man()
-        self._terminal_service.write_text(self._current_man) 
+        print()
+        self._terminal_service.write_text(self._word.get_hidden_word())
+        print()
+        self._terminal_service.write_list(self._parachute.get_parachute())
 
-               
+        if len(self._parachute.get_parachute()) < 6:
+            self._is_playing = False
+            print("\nTry again!\n")
 
-
-
-
+        if not self._word.check_hidden_word():
+            self._is_playing = False
+            print("\nYou did it!\n")

@@ -1,103 +1,76 @@
-
 import random
 
-class Word:
-    """The word that a player supposed to guess.
 
-    The responsibility of Word is to keep track of the word being guessed.
+class Word:
+    """The word that the player needs to guess.
+
+    The responsibility of Word is to check if the player is guessing the word correctly.
 
     Attributes:
-        _word_list(list): list of the target word to choose from
-        _target_word(string): the word in the _word_list that a player supposed to guess
-        _letter_list(list): list of letters that are in the _target_word
-        _current_word(string): the word that is manipulated with each guess
-        _current_list(list): the list version of the _target_word
-        _guessed_list(list): list of the letters that are guessed correctly
+        _word_list (list): A list of random words.
+        _current_word (str): A random word chosen from a list.
+        _hidden_word (list): An empty list to be filled with underscores.
     """
 
     def __init__(self):
         """Constructs a new Word.
 
         Args:
-            self(Word): An instance of Word
+            self (Word): An instance of Word
         """
+        self._word_list = [
+            'information', 'confusion', 'accerelation', 'redeem', 'generator', 'bandit', 'cellphone',
+            'hotdog', 'juxtaposition', 'ostrich', 'absolute', 'weakness', 'criminal', 'rhetoric'
+            ]
+        self._current_word = random.choice(self._word_list)
+        self._hidden_word = []
 
-        self._word_list = ["information", "confusion", "accerelation" ]
-        self._letter_list = []
-        self._current_word = ''
-        self._current_list = []
-        self._guessed_list = []
-   
-        self._target_word = random.choice(self._word_list)  # a target word is chosen
-        self._letter_list = list(self._target_word)   # make a list of letters that are in the target word
+        for _ in range(len(self._current_word)):
+            self._hidden_word.append('_')
 
-
-
-    def get_initial_word(self):
-        """Sets an initial value, which is '_', of the _current_word and a list version
-        of the _current_word.
+    def get_hidden_word(self):
+        """Gets the current chosen word.
 
         Args:
-            self(Word): an instance of Word
+            self (Word): An instance of Word
 
-        return:
-            initial set of word with '_'    
+        Returns:
+            _hidden_word (list): An empty list filled with underscores.
         """
-    
-        for i in range(len(self._target_word)):   # _current_word is padded with '_'
-            self._current_word += '_'             # for the length of the target word
+        return ' '.join(self._hidden_word)
 
-        self._current_list = list(self._current_word)   # list version of the _current_word
-
-        return self._current_word 
-
-
-
-    def wrong_guess(self, guessed):
-        """Gets a player's guess and finds out if it is the correct guess.
-
-        Args:
-            self(Word): an instance of Word
-            guessed(string): a letter a player guessed
-
-        return:
-            boolean: True if a player guessed wrong    
-        """
-
-        if guessed in self._letter_list:         # if a player guessed right
-            self._guessed_list.append(guessed)   # appends it to the guessed_list
-            return False                         # sets wrong_guess to be false
-        else:
-            return True                          # otherwise wrong_guess is true   
-
-
-    def set_word(self):
-        """Substitutes _current_word with the letter guessed.
+    def set_hidden_word(self, letter):
+        """Substitutes an underscore in the hidden word with the letter guessed
+        if the letter is in the word.
         
         Args:
-            self(Word): an instance of Word
-
-        Return:
-            _current_word padded with the right guessed letter.    
+            self (Word): An instance of Word
         """
-           
-        for i in range(len(self._current_list)):             # if list version of target word is in the 
-            if self._letter_list[i] in self._guessed_list:   # right guessed letter list,
-                self._current_list[i] = self._letter_list[i] # swap a list version of current word with 
-                                                             # the letter
-        self._current_word = "".join(self._current_list)     # _current_word gets _current_list(list is now a string)
+        for i in range(len(self._current_word)):
+            if letter == self._current_word[i]:
+                self._hidden_word[i] = self._current_word[i]
 
-        return self._current_word 
-
-
-    def  complete_word(self):
-        """Checks if a word is completed with letters.
+    def check_guess(self, guess):
+        """Checks if the guessed letter is in the word.
+        
         Args:
-            self(Word): an instance of Word
-        return:
-            True if all '_' is substituted with letters in a _current_list    
+            self (Word): An instance of Word
+
+        Returns:
+            boolean: True to delete a line in the parachute.
         """
-        if '_' in self._current_list:
+        if guess in self._current_word:
             return False
         else:
-            return True                             
+            return True
+
+    def check_hidden_word(self):
+        """Check if the hidden word has any underscore in it.
+
+        Returns:
+            boolean: True if there are underscores.
+        """
+        if '_' in self._hidden_word:
+            return True
+        else:
+            return False
