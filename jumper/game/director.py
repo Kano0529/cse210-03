@@ -13,6 +13,7 @@ class Director:
         _terminal_service (TerminalService): For getting and displaying information on the terminal.
         _word (Word): The game's chosen word.
         _is_playing (boolean): Whether or not to keep playing.
+        _guess (str): The letter the player chose to guess.
     """
     
     def __init__(self):
