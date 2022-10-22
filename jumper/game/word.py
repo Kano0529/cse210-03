@@ -25,6 +25,7 @@ class Word:
         self._current_word = random.choice(self._word_list)
         self._hidden_word = []
 
+        # Append underscores to the hidden word.
         for _ in range(len(self._current_word)):
             self._hidden_word.append('_')
 
@@ -37,6 +38,7 @@ class Word:
         Returns:
             _hidden_word (list): An empty list filled with underscores.
         """
+        # Return the hidden word concatenated in a string. Each underscore is separated with a space.
         return ' '.join(self._hidden_word)
 
     def set_hidden_word(self, letter):
@@ -46,6 +48,7 @@ class Word:
         Args:
             self (Word): An instance of Word
         """
+        # Replace the underscore with the letter guessed if it is there.
         for i in range(len(self._current_word)):
             if letter == self._current_word[i]:
                 self._hidden_word[i] = self._current_word[i]

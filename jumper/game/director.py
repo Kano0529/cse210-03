@@ -33,11 +33,13 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
+        # Display the parachute and the hidden word.
         print()
         self._terminal_service.write_text(self._word.get_hidden_word())
         print()
         self._terminal_service.write_list(self._parachute.get_parachute())
 
+        # Start the game loop.
         while self._is_playing:
             self._get_inputs()
             self._do_updates()
@@ -49,6 +51,7 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
+        # Ask the user for a letter and change the underscores in the hidden word.
         self._guess = self._terminal_service.read_text("Guess a letter [a-z]: ")
         self._word.set_hidden_word(self._guess)
 
@@ -58,6 +61,7 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
+        # Erase a line of the parachute if the guess was wrong.
         self._parachute.set_parachute(self._word.check_guess(self._guess))
  
     def _do_outputs(self):
@@ -66,15 +70,18 @@ class Director:
         Args:
             self (Director): an instance of Director
         """
+        # Display the parachute and the hidden word.
         print()
         self._terminal_service.write_text(self._word.get_hidden_word())
         print()
         self._terminal_service.write_list(self._parachute.get_parachute())
 
+        # If the the parachute is completely erased, the player loses.
         if len(self._parachute.get_parachute()) < 6:
             self._is_playing = False
             print("\nTry again!\n")
 
+        # If the hidden word is uncovered completely, the player wins.
         if not self._word.check_hidden_word():
             self._is_playing = False
             print("\nYou did it!\n")
