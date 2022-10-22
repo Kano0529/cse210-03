@@ -81,7 +81,7 @@ class Director:
             self._is_playing = False
             print("\nTry again!\n")
 
-        # If the hidden word is uncovered completely, the player wins.
+        # If the hidden word is uncovered completely, the player wins!!.
         if not self._word.check_hidden_word():
             self._is_playing = False
             print("\nYou did it!\n")
