@@ -1,8 +1,8 @@
 class Parachute:
     """The drawing of the parachute and the player.
 
-    The responsibility of Parachute is to handle the parachute and man drawing when a player
-    guesses a letter wrong.
+    The responsibility of Parachute is to handle the parachute and the man drawing and
+    change depending of the player's guess.
 
     Attributes:
         _parachute (list): a list containing the strings to draw the parachute and the player.
@@ -23,8 +23,7 @@ class Parachute:
             '  /|\ ', 
             '  / \ ', 
             '', 
-            '^^^^^^^'
-            ]
+            '^^^^^^^']
 
     def get_parachute(self):
         """Gets the parachute.

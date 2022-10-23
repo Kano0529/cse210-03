@@ -13,6 +13,7 @@ class Director:
         _terminal_service (TerminalService): For getting and displaying information on the terminal.
         _word (Word): The game's chosen word.
         _is_playing (boolean): Whether or not to keep playing.
+        _guess (str): The letter the player guesses.
     """
     
     def __init__(self):
@@ -48,16 +49,23 @@ class Director:
 
         Args:
             self (Director): an instance of Director.
-        """
+        """  
         self._guess = self._terminal_service.read_text("Guess a letter [a-z]: ")
-        self._word.set_hidden_word(self._guess)
+
+        alphabet = [
+            'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+            'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+            'z', 'x', 'c', 'v', 'b', 'n', 'm']
+        while self._guess not in alphabet:
+            self._guess = input("Please choose a letter in the alphabet [a-z]: ")
 
     def _do_updates(self):
-        """Changes the parachute depending of the guess.
+        """Changes the parachute and the hidden word depending of the guess.
 
         Args:
             self (Director): an instance of Director.
         """
+        self._word.set_hidden_word(self._guess)
         self._parachute.set_parachute(self._word.check_guess(self._guess))
  
     def _do_outputs(self):
@@ -75,6 +83,6 @@ class Director:
             self._is_playing = False
             print("\nTry again!\n")
 
-        if not self._word.check_hidden_word():
+        if self._word.check_hidden_word():
             self._is_playing = False
             print("\nYou did it!\n")

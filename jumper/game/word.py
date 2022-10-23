@@ -20,8 +20,7 @@ class Word:
         """
         self._word_list = [
             'information', 'confusion', 'accerelation', 'redeem', 'generator', 'bandit', 'cellphone',
-            'hotdog', 'juxtaposition', 'ostrich', 'absolute', 'weakness', 'criminal', 'rhetoric'
-            ]
+            'hotdog', 'juxtaposition', 'ostrich', 'absolute', 'weakness', 'criminal', 'rhetoric']
         self._current_word = random.choice(self._word_list)
         self._hidden_word = []
 
@@ -71,6 +70,6 @@ class Word:
             boolean: True if there are underscores.
         """
         if '_' in self._hidden_word:
-            return True
-        else:
             return False
+        else:
+            return True
